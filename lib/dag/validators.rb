@@ -4,12 +4,12 @@ module Dag
   class CreateCorrectnessValidator < ActiveModel::Validator
 
     def validate(record)
-      record.errors[:base] << I18n.t('acts_as_dag.errors.create.has_duplicatess') if has_duplicates(record)
-      record.errors[:base] << I18n.t('acts_as_dag.errors.create.has_long_cycles') if has_long_cycles(record)
-      record.errors[:base] << I18n.t('acts_as_dag.errors.create.has_short_cycles') if has_short_cycles(record)
+      record.errors.add(:base, I18n.t('acts_as_dag.errors.create.has_duplicatess')) if has_duplicates(record)
+      record.errors.add(:base, I18n.t('acts_as_dag.errors.create.has_long_cycles')) if has_long_cycles(record)
+      record.errors.add(:base, I18n.t('acts_as_dag.errors.create.has_short_cycles')) if has_short_cycles(record)
       cnt = check_possible(record)
-      record.errors[:base] << I18n.t('acts_as_dag.errors.create.direct_nonzero_link') if cnt == 1
-      record.errors[:base] << I18n.t('acts_as_dag.errors.create.indirect_less_than_one') if cnt == 2
+      record.errors.add(:base, I18n.t('acts_as_dag.errors.create.direct_nonzero_link')) if cnt == 1
+      record.errors.add(:base, I18n.t('acts_as_dag.errors.create.indirect_less_than_one')) if cnt == 2
     end
 
     private
